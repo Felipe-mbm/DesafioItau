@@ -3,6 +3,7 @@ package com.example.itauJava.repository;
 import com.example.itauJava.dto.TransacaoDTO;
 import org.springframework.stereotype.Repository;
 
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,4 +28,7 @@ public class TransacaoRepository {
         listaDeTransacoes.clear();
     }
 
+    public OffsetDateTime estatistica(OffsetDateTime horaInicial) {
+        return null;
+    }
 }

@@ -3,22 +3,27 @@ package com.example.itauJava.service;
 import com.example.itauJava.dto.EstatisticasDTO;
 import com.example.itauJava.dto.TransacaoDTO;
 import com.example.itauJava.repository.TransacaoRepository;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.OffsetDateTime;
 
 @Service
 public class EstatisticasService {
 
     private final TransacaoRepository transacaoRepository;
+    private final EstatisticaProperties estatisticaProperties;
 
-    public EstatisticasService(TransacaoRepository transacaoRepository) {
+    public EstatisticasService(TransacaoRepository transacaoRepository, EstatisticaProperties estatisticaProperties) {
         this.transacaoRepository = transacaoRepository;
+        this.estatisticaProperties = estatisticaProperties;
     }
 
-    public EstatisticasDTO calcularEstatisticas() {
+    public ResponseEntity calcularEstatisticas() {
 
+        final OffsetDateTime horaInicial = OffsetDateTime.now().minusSeconds(estatisticaProperties.segundos());
         BigDecimal valorMax = null;
         BigDecimal valorMin = null;
         BigDecimal sum = BigDecimal.ZERO;
@@ -44,6 +49,6 @@ public class EstatisticasService {
         estatisticasDTO.setMin(valorMin);
         estatisticasDTO.setSum(sum);
 
-        return estatisticasDTO;
+        return ResponseEntity.ok().body(transacaoRepository.estatistica(horaInicial));
     }
 }
