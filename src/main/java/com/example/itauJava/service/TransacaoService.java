@@ -9,16 +9,16 @@ import java.time.OffsetDateTime;
 @Service
 public class TransacaoService {
     public void validarTransacao(TransacaoDTO transacaoDTO) {
-        if (transacaoDTO.getValor().compareTo(BigDecimal.ZERO) < 0)
+        if (transacaoDTO.valor().compareTo(0.0) < 0)
             throw new IllegalArgumentException("Erro: Essa transção não é válid! Transações devem ter o valor maior ou igual a 0.");
 
-        if (transacaoDTO.getDataHora().isAfter(OffsetDateTime.now()))
+        if (transacaoDTO.dataHora().isAfter(OffsetDateTime.now()))
             throw new IllegalArgumentException("Erro: Isso não é uma transação válida! Data de transação inválida.");
 
-        if (transacaoDTO.getValor() == null)
+        if (transacaoDTO.valor() == null)
             throw new IllegalArgumentException("Erro: É necessário a transação possuir um valor.");
 
-        if (transacaoDTO.getDataHora() == null)
+        if (transacaoDTO.dataHora() == null)
             throw new IllegalArgumentException("Erro: É preciso ter uma data e hora na trasação.");
     }
 

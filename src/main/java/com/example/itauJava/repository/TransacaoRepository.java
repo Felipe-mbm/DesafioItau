@@ -1,6 +1,8 @@
 package com.example.itauJava.repository;
 
+import com.example.itauJava.dto.EstatisticasDTO;
 import com.example.itauJava.dto.TransacaoDTO;
+import com.example.itauJava.service.EstatisticaProperties;
 import org.springframework.stereotype.Repository;
 
 import java.time.OffsetDateTime;
@@ -11,13 +13,40 @@ import java.util.List;
 public class TransacaoRepository {
 
     List<TransacaoDTO> listaDeTransacoes = new ArrayList<>();
+    private final EstatisticaProperties estatisticaProperties;
 
-    public void salvarDados(TransacaoDTO transacaoDTO) {
-        listaDeTransacoes.add(transacaoDTO);
+    public TransacaoRepository(EstatisticaProperties estatisticaProperties) {
+        this.estatisticaProperties = estatisticaProperties;
+    }
+
+    public void salvarDados(TransacaoDTO transacao) {
+        listaDeTransacoes.add(transacao);
     }
 
     public List<TransacaoDTO> listar() {
         return listaDeTransacoes;
+    }
+
+    public EstatisticasDTO estatistica(OffsetDateTime horaInicial) {
+
+        if (listaDeTransacoes.isEmpty()) {
+            return new EstatisticasDTO(0L, 0.0, 0.0, 0.0, 0.0);
+        }
+
+        final var summary = listaDeTransacoes.stream()
+                .filter(t -> t.dataHora()
+                        .isAfter(OffsetDateTime
+                                .now()
+                                .minusSeconds(estatisticaProperties.segundos())))
+                .mapToDouble(t -> t.valor().doubleValue())
+                .summaryStatistics();
+
+        return new EstatisticasDTO(
+                summary.getCount(),
+                summary.getAverage(),
+                summary.getMax(),
+                summary.getMin(),
+                summary.getSum());
     }
 
     public void limparDados() {
@@ -28,7 +57,4 @@ public class TransacaoRepository {
         listaDeTransacoes.clear();
     }
 
-    public OffsetDateTime estatistica(OffsetDateTime horaInicial) {
-        return null;
-    }
 }

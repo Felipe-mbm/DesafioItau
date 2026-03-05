@@ -1,6 +1,6 @@
 package com.example.itauJava.service;
 
-import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 
-@ConfigurationPropertiesScan
+@ConfigurationProperties(prefix = "estatistica")
 public record EstatisticaProperties(Integer segundos) {}

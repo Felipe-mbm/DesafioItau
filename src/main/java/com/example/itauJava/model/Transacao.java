@@ -11,8 +11,6 @@ import java.time.OffsetDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Transacao {
-
     private BigDecimal valor;
     private OffsetDateTime dataHora;
-
 }
