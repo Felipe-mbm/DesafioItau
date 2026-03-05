@@ -34,10 +34,7 @@ public class TransacaoRepository {
         }
 
         final var summary = listaDeTransacoes.stream()
-                .filter(t -> t.dataHora()
-                        .isAfter(OffsetDateTime
-                                .now()
-                                .minusSeconds(estatisticaProperties.segundos())))
+                .filter(t -> t.dataHora().isAfter(horaInicial))
                 .mapToDouble(t -> t.valor().doubleValue())
                 .summaryStatistics();
 
