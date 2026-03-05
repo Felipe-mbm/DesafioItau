@@ -38,6 +38,10 @@ public class TransacaoRepository {
                 .mapToDouble(t -> t.valor().doubleValue())
                 .summaryStatistics();
 
+        if (summary.getCount() == 0) {
+            return new EstatisticasDTO(0L, 0.0, 0.0, 0.0, 0.0);
+        }
+
         return new EstatisticasDTO(
                 summary.getCount(),
                 summary.getAverage(),
